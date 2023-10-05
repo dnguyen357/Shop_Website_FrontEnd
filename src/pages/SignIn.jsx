@@ -28,7 +28,7 @@ export default function SignIn({setUser}){
             });
 
             const result = await response.json();
-            console.log(result.token)
+            console.log(result)
             setToken(result.token)
             setUserId(result._id)
             setUser(result.username)

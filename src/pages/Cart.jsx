@@ -24,21 +24,23 @@ export default function Cart(){
     useEffect(() => {
         fetchCart();
       }, [isAdded]);
-    function handleClick(e,product){
-        updateCart(e,token,userId,product.productId,product.quantity-1,product.price,product.title,product.image)
-    }
+    
     function Cart({product}){
         return (
-            <div className="product-cart">
-                 <Link to={`/Product/${product._id}`} style={{ textDecoration: 'none' ,color: 'black',}}>
-                    <img src={product.image} alt="product-image" className='image'/>
-                    <h4>{product.title}</h4>
-                </Link>
-                <h4>Price: {product.price}</h4>
-                <div>
-                    <button onClick={(e)=>{handleClick(e,product)}}>-</button>
-                    <input readOnly value={product.quantity}/>
-                    <button onClick={(e)=>{updateCart(e,token,userId,product.productId,product.quantity+1,product.price,product.title,product.image)}}>+</button>
+            <div className="cart-product">
+                <div className='cart-product-left'>
+                    <Link to={`/Product/${product._id}`} style={{ textDecoration: 'none' ,color: 'black',}}>
+                        <img src={product.image} alt="product-image" className='image'/>
+                    </Link>
+                </div>
+                <div className="cart-product-right">
+                    <p className='cart-product-right-title'>{product.title}</p>
+                    <p className='cart-product-right-price'>Price: ${product.price}</p>
+                    <div>
+                        <button onClick={(e)=>{updateCart(e,token,userId,product.productId,product.quantity-1,product.price,product.title,product.image)}}>-</button>
+                        <input readOnly value={product.quantity} className='cart-input'/>
+                        <button onClick={(e)=>{updateCart(e,token,userId,product.productId,product.quantity+1,product.price,product.title,product.image)}}>+</button>
+                    </div>
                 </div>
             </div>
            
@@ -55,8 +57,8 @@ export default function Cart(){
         setTotalAmount(getTotalCost());
     },[cartList])
     return (
-        <>
-        <div>
+        <div className="cart-container">
+        <div className="cart-left">
             {
                cartList.map((product)=>{
                     // return (cartList[product._id] >= 1 ? <Cart key={product._id} product={product} />:<div key={product._id}></div>)
@@ -64,12 +66,12 @@ export default function Cart(){
                })
             }
         </div>
-        <div>
-            <p>Subtotal: ${totalAmount.toFixed(2) }</p>
-            <button onClick={()=>{navigate('/Products')}}>Continue Shopping</button>
-            <button>Checkout</button>
+        <div className='cart-right'>
+            <p className='cart-right-price'>Subtotal: ${totalAmount.toFixed(2)}</p>
+            <button className='cart-right-button' onClick={()=>{navigate('/Products')}}>Continue Shopping</button>
+            <button className='cart-right-button'>Checkout</button>
         </div>
-        </>
+        </div>
         
     )
 }
